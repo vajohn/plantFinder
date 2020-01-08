@@ -1,0 +1,35 @@
+$black-page: #424242;
+.pagination {
+  margin-top: .5rem;
+  margin-bottom: .5rem;
+  display: flex;
+  padding-left: 0;
+  list-style: none;
+  border-radius: .25rem;
+  justify-content: center;
+  background-color: $black-page;
+
+  li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+
+    .page-link {
+      position: relative;
+      display: block;
+      padding: .5rem .75rem;
+      margin-left: -1px;
+      line-height: 1.25;
+      color: #fff;
+      background-color: #424242;
+
+      &:not(:disabled):not(.disabled) {
+        cursor: pointer;
+      }
+
+      &:hover {
+        background: lighten($black-page, 25.5%);
+      }
+    }
+  }
+
+}

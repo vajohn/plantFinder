@@ -1,1 +1,61 @@
-<p>filter-plants works!</p>
+<div class="row">
+  <div class="col-md-3">
+    <label id="first">Season</label>
+    <mat-radio-group
+      aria-labelledby="first"
+      class="filter-radio-group"
+      [(ngModel)]="plantSeason">
+      <mat-radio-button class="filter-radio-button" *ngFor="let season of seasons" [value]="season" >
+        {{season}}
+      </mat-radio-button>
+    </mat-radio-group>
+  </div>
+  <div class="col-md-3">
+    <label id="second">Types</label>
+    <mat-radio-group
+      aria-labelledby="first"
+      class="filter-radio-group"
+      [(ngModel)]="plantType">
+      <mat-radio-button class="filter-radio-button" *ngFor="let type of types" [value]="type" >
+        {{type}}
+      </mat-radio-button>
+    </mat-radio-group>
+  </div>
+  <div class="col-md-3">
+    <label id="third">Locations</label>
+    <mat-radio-group
+      aria-labelledby="first"
+      class="filter-radio-group"
+      [(ngModel)]="plantLocation">
+      <mat-radio-button class="filter-radio-button" *ngFor="let location of locations" [value]="location" >
+        {{location}}
+      </mat-radio-button>
+    </mat-radio-group>
+  </div>
+  <div class="col-md-3">
+    <label id="fourth">Value</label>
+    <mat-radio-group
+      aria-labelledby="first"
+      class="filter-radio-group"
+      [(ngModel)]="plantValue">
+      <mat-radio-button class="filter-radio-button" *ngFor="let value of values" [value]="value" >
+        {{value}}
+      </mat-radio-button>
+    </mat-radio-group>
+  </div>
+</div>
+<button mat-raised-button class="center-xs" (click)="filterResults()">Filter</button>
+
+<table mat-table [dataSource]="plantsTempList" class="mat-elevation-z8" >
+  <caption></caption>
+
+  <ng-container matColumnDef="common_name">
+    <th id="common_name" mat-header-cell *matHeaderCellDef >Common name</th>
+    <td mat-cell *matCellDef="let element"> {{element.common_name}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr (click)="openModal(row)" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+</table>
+
