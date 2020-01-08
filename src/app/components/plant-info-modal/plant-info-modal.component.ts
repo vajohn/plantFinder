@@ -1,5 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {PlantsModel} from '../../models/plantsModel';
 
 @Component({
   selector: 'app-plant-info-modal',
@@ -10,7 +11,7 @@ export class PlantInfoModalComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<PlantInfoModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data
+    @Inject(MAT_DIALOG_DATA) public data: PlantsModel
   ) { }
 
   ngOnInit() {

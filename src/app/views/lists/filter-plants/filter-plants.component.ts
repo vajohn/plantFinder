@@ -16,11 +16,13 @@ export class FilterPlantsComponent implements OnInit {
   seasons: string[] = ['Winter', 'Spring', 'Summer', 'Autumn'];
   types: string[] = ['Shrub', 'Tree', 'Perennial', 'Grass'];
   locations: string[] = ['Garden', 'Roof', 'Sidewalk'];
-  values: string[] = ['Pollinator', 'Cover', 'Fruit', 'Greens', 'Buds'];
+  values: string[] = ['Pollinator', 'Cover', 'Fruit', 'Greens', 'Buds', 'Ghetto'];
   plantSeason: string = this.seasons[0];
   plantType: string;
   plantLocation: string;
   plantValue: string;
+  showError = false;
+  errorMessage = '';
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
@@ -28,14 +30,18 @@ export class FilterPlantsComponent implements OnInit {
   }
 
   ngOnInit() {
+    const currentData = JSON.parse(sessionStorage.getItem('local')) as PlantsModel[];
+    const saveData: PlantsModel[] = currentData !== undefined ? currentData : [] as PlantsModel[];
     this.route.data.subscribe(data => {
       this.plantsList = new MatTableDataSource(data.PlantsListResolver);
+      this.plantsList.filteredData.push(...saveData);
     }, error => {
-      // todo add error modal
+      this.showError = true;
+      this.errorMessage = error;
     });
 
     this.plantsList.sort = this.sort;
-    this.plantsTempList = this.plantsList.filteredData.slice(0, 10);
+    this.plantsTempList = this.plantsList;
 
   }
 

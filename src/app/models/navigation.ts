@@ -4,3 +4,8 @@ export interface Navigations {
   icon?: string;
   children?: Navigations[];
 }
+
+export interface Dropdown {
+  value: string;
+  viewValue: string;
+}

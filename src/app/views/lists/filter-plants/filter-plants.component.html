@@ -47,7 +47,7 @@
 <button mat-raised-button class="center-xs" (click)="filterResults()">Filter</button>
 
 <table mat-table [dataSource]="plantsTempList" class="mat-elevation-z8" >
-  <caption></caption>
+  <caption *ngIf="showError">{{errorMessage}}</caption>
 
   <ng-container matColumnDef="common_name">
     <th id="common_name" mat-header-cell *matHeaderCellDef >Common name</th>

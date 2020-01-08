@@ -1,1 +1,45 @@
-<p>add-new-plant works!</p>
+<h2 *ngIf="showResult">{{result}}</h2>
+
+<mat-card>
+  <form class="row" [formGroup]="addNewPlant" (ngSubmit)="onSubmit()">
+    <mat-form-field class="col-md-6">
+      <label>
+        <input matInput placeholder="Common name" formControlName="common_name" required>
+      </label>
+    </mat-form-field>
+    <mat-form-field class="col-md-6">
+      <label>
+        <input matInput placeholder="Flower Color" formControlName="flower_color" required>
+      </label>
+    </mat-form-field>
+    <mat-form-field  class="col-md-6">
+      <mat-label>Bloom time</mat-label>
+      <mat-select formControlName="bloom_time">
+        <mat-option *ngFor="let item of time" [value]="item.value">
+          {{item.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field  class="col-md-6">
+      <mat-label>Plant type</mat-label>
+      <mat-select formControlName="plant_type">
+        <mat-option *ngFor="let plant of type" [value]="plant.value">
+          {{plant.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="col-md-6">
+      <label>
+        <input matInput formControlName="soil_type" placeholder="Soil type">
+      </label>
+    </mat-form-field>
+    <mat-form-field class="col-md-6">
+      <label>
+        <input matInput formControlName="habitat_value" placeholder="Habitat value">
+      </label>
+    </mat-form-field>
+    <div class="row">
+      <button type="submit" [disabled]="addNewPlant.invalid" mat-raised-button>Save</button>
+    </div>
+  </form>
+</mat-card>
