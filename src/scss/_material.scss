@@ -1,0 +1,9 @@
+@import '~@angular/material/theming';
+
+@include mat-core();
+
+$plant-app-primary: mat-palette($mat-green);
+$plant-app-accent:  mat-palette($mat-purple);
+$plant-app-warn:    mat-palette($mat-red);
+$plant-app-theme: mat-light-theme($plant-app-primary, $plant-app-accent, $plant-app-warn);
+@include angular-material-theme($plant-app-theme);

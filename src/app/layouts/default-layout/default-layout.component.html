@@ -1,0 +1,12 @@
+<mat-toolbar color="accent" class="mat-elevation-z5">
+  <mat-toolbar-row >
+    <div *ngFor="let url of urls" class="grow">
+      <a  [routerLink]="url.path" routerLinkActive="is-active">{{url.name}}</a>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
+<div>
+  <main class="main">
+    <router-outlet></router-outlet>
+  </main>
+</div>
