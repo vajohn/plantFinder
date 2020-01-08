@@ -24,7 +24,12 @@ export class AllPlantsComponent implements OnInit {
     const saveData: PlantsModel[] = currentData !== undefined ? currentData : [] as PlantsModel[];
     this.route.data.subscribe(data => {
       this.plantsList = new MatTableDataSource(data.PlantsListResolver);
-      this.plantsList.filteredData.push(...saveData);
+      for (const i in saveData) {
+        if (saveData !== []) {
+          this.plantsList.filteredData.push(saveData[i]);
+        }
+      }
+      // this.plantsList.filteredData.push(...saveData);
     }, error => {
       this.showError = true;
       this.errorMessage = error;

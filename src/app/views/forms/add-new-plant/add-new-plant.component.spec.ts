@@ -78,10 +78,10 @@ describe('AddNewPlantComponent', () => {
   }));
 
   it('form should be invalid', async(() => {
-    component.addNewPlant.controls.name.setValue('cat');
-    component.addNewPlant.controls.time.setValue('');
-    component.addNewPlant.controls.type.setValue('');
-    component.addNewPlant.controls.color.setValue('red');
+    component.addNewPlant.controls.common_name.setValue('cat');
+    component.addNewPlant.controls.bloom_time.setValue('');
+    component.addNewPlant.controls.soil_type.setValue('');
+    component.addNewPlant.controls.flower_color.setValue('red');
     expect(component.addNewPlant.valid).toBeFalsy();
   }));
 });
