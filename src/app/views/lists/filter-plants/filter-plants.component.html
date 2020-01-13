@@ -1,50 +1,62 @@
-<div class="row">
-  <div class="col-md-3">
-    <label id="first">Season</label>
-    <mat-radio-group
-      aria-labelledby="first"
-      class="filter-radio-group"
-      [(ngModel)]="plantSeason">
-      <mat-radio-button class="filter-radio-button" *ngFor="let season of seasons" [value]="season" >
-        {{season}}
-      </mat-radio-button>
-    </mat-radio-group>
+<form [formGroup]="searchPlantForm" (ngSubmit)="filterResult()">
+  <div class="row">
+    <div class="col-md-3">
+      <label id="first">Season</label>
+      <mat-radio-group
+        aria-labelledby="first"
+        class="filter-radio-group"
+        formControlName="bloom_time">
+        <mat-radio-button class="filter-radio-button" *ngFor="let season of seasons" [value]="season" >
+          {{season}}
+        </mat-radio-button>
+        <mat-error *ngIf="f.bloom_time.errors && !f.error">
+          Please select season
+        </mat-error>
+
+      </mat-radio-group>
+    </div>
+    <div class="col-md-3">
+      <label id="second">Types</label>
+      <mat-radio-group
+        aria-labelledby="first"
+        class="filter-radio-group"
+        formControlName="plant_type">
+        <mat-radio-button class="filter-radio-button" *ngFor="let type of types" [value]="type" >
+          {{type}}
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div class="col-md-3">
+      <label id="third">Location</label>
+      <mat-radio-group
+        aria-labelledby="first"
+        class="filter-radio-group"
+        formControlName="appropriate_location">
+        <mat-radio-button class="filter-radio-button" *ngFor="let location of locations" [value]="location" >
+          {{location}}
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div class="col-md-3">
+      <label id="fourth">Value</label>
+      <mat-radio-group
+        aria-labelledby="first"
+        class="filter-radio-group"
+        formControlName="habitat_value">
+        <mat-radio-button class="filter-radio-button" *ngFor="let value of values" [value]="value" >
+          {{value}}
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
   </div>
-  <div class="col-md-3">
-    <label id="second">Types</label>
-    <mat-radio-group
-      aria-labelledby="first"
-      class="filter-radio-group"
-      [(ngModel)]="plantType">
-      <mat-radio-button class="filter-radio-button" *ngFor="let type of types" [value]="type" >
-        {{type}}
-      </mat-radio-button>
-    </mat-radio-group>
-  </div>
-  <div class="col-md-3">
-    <label id="third">Locations</label>
-    <mat-radio-group
-      aria-labelledby="first"
-      class="filter-radio-group"
-      [(ngModel)]="plantLocation">
-      <mat-radio-button class="filter-radio-button" *ngFor="let location of locations" [value]="location" >
-        {{location}}
-      </mat-radio-button>
-    </mat-radio-group>
-  </div>
-  <div class="col-md-3">
-    <label id="fourth">Value</label>
-    <mat-radio-group
-      aria-labelledby="first"
-      class="filter-radio-group"
-      [(ngModel)]="plantValue">
-      <mat-radio-button class="filter-radio-button" *ngFor="let value of values" [value]="value" >
-        {{value}}
-      </mat-radio-button>
-    </mat-radio-group>
-  </div>
+
+
+<div class="row around-sm">
+  <button mat-raised-button class="col-md-5" type="button" (click)="resetList()">Reset</button>
+  <button mat-raised-button class="col-md-5" type="submit">Filter</button>
 </div>
-<button mat-raised-button class="center-xs" (click)="filterResults()">Filter</button>
+
+</form>
 
 <table mat-table [dataSource]="plantsTempList" class="mat-elevation-z8" >
   <caption *ngIf="showError">{{errorMessage}}</caption>

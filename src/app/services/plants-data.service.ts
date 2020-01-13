@@ -18,4 +18,10 @@ export class PlantsDataService {
       `${this.baseUrl}`
     );
   }
+
+  searchForPlants(parameters) {
+    return this.http.get<PlantsModel[]>(
+      `${this.baseUrl}`, {params: parameters}
+    );
+  }
 }

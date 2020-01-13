@@ -4,7 +4,7 @@ import { PlantsDataService } from './plants-data.service';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {HttpClientModule} from '@angular/common/http';
 import {PlantsModel} from '../models/plantsModel';
-import {plantTestData} from '../strings';
+import {filterTestData, plantTestData} from '../strings';
 
 describe('PlantsDataService', () => {
   let plantsService: PlantsDataService;
@@ -34,6 +34,18 @@ describe('PlantsDataService', () => {
     });
 
     const request = httpMock.expectOne(`${plantsService.baseUrl}`);
+    expect(request.request.method).toBe('GET');
+    request.flush(dummyData);
+  });
+
+  it('should return an Observable checking for Summer filter', () => {
+    const dummyData: PlantsModel[] = filterTestData;
+
+    plantsService.searchForPlants({bloom_time: 'Summer'}).subscribe(data => {
+      expect(data).toEqual(dummyData);
+    });
+
+    const request = httpMock.expectOne(`${plantsService.baseUrl}?bloom_time=Summer`);
     expect(request.request.method).toBe('GET');
     request.flush(dummyData);
   });

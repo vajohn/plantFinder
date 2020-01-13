@@ -1,12 +1,15 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, inject, TestBed} from '@angular/core/testing';
 
-import { FilterPlantsComponent } from './filter-plants.component';
+import {FilterPlantsComponent} from './filter-plants.component';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RouterTestingModule} from '@angular/router/testing';
 import {ComponentsModule} from '../../../components/components.module';
 import {MaterialModule} from '../../../material.module';
+import {PlantsDataService} from '../../../services/plants-data.service';
+import {HttpClientModule} from '@angular/common/http';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 describe('FilterPlantsComponent', () => {
   let component: FilterPlantsComponent;
@@ -14,11 +17,19 @@ describe('FilterPlantsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FilterPlantsComponent ],
-      imports: [MaterialModule, ComponentsModule, RouterTestingModule, BrowserAnimationsModule, FormsModule],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      declarations: [FilterPlantsComponent],
+      imports: [
+        MaterialModule,
+        ComponentsModule,
+        RouterTestingModule,
+        BrowserAnimationsModule,
+        HttpClientModule, HttpClientTestingModule,
+        FormsModule],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      providers: [PlantsDataService]
+
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -27,9 +38,9 @@ describe('FilterPlantsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create the component with service', async(inject([PlantsDataService], (myService: PlantsDataService) => {
     expect(component).toBeTruthy();
-  });
+  })));
 
   it('should test the filter table', (done) => {
 

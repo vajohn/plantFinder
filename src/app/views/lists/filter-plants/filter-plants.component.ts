@@ -3,6 +3,8 @@ import {MatDialog, MatSort, MatTableDataSource} from '@angular/material';
 import {ActivatedRoute} from '@angular/router';
 import {PlantInfoModalComponent} from '../../../components/plant-info-modal/plant-info-modal.component';
 import {PlantsModel} from '../../../models/plantsModel';
+import {PlantsDataService} from '../../../services/plants-data.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-filter-plants',
@@ -12,21 +14,24 @@ import {PlantsModel} from '../../../models/plantsModel';
 export class FilterPlantsComponent implements OnInit {
   plantsList;
   plantsTempList;
+  searchPlantForm: FormGroup;
   displayedColumns: string[] = ['common_name'];
   seasons: string[] = ['Winter', 'Spring', 'Summer', 'Autumn'];
   types: string[] = ['Shrub', 'Tree', 'Perennial', 'Grass'];
   locations: string[] = ['Garden', 'Roof', 'Sidewalk'];
   values: string[] = ['Pollinator', 'Cover', 'Fruit', 'Greens', 'Buds', 'Ghetto'];
-  plantSeason: string = this.seasons[0];
-  plantType: string;
-  plantLocation: string;
-  plantValue: string;
+
   showError = false;
   errorMessage = '';
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-  constructor(private route: ActivatedRoute, public dialog: MatDialog) {
+  constructor(
+    private route: ActivatedRoute,
+    public dialog: MatDialog,
+    private pds: PlantsDataService,
+    private formBuilder: FormBuilder
+  ) {
   }
 
   ngOnInit() {
@@ -48,21 +53,43 @@ export class FilterPlantsComponent implements OnInit {
     this.plantsList.sort = this.sort;
     this.plantsTempList = this.plantsList;
 
+    this.searchPlantForm = this.formBuilder.group({
+      bloom_time: ['', Validators.required],
+      plant_type: [''],
+      appropriate_location: [''],
+      habitat_value: ['']
+    });
+
   }
 
-  filterResults() {
-    // avoiding to directly mutate result data
-    const plantList = this.plantsList.filteredData;
 
-    const result = plantList.filter((item: PlantsModel) => {
-      return item.bloom_time === this.plantSeason
-        || item.plant_type === this.plantType
-        || item.appropriate_location === this.plantLocation
-        || item.habitat_value === this.plantValue;
-    });
-    // setting size of result, will make it dynamic in future
-    // result.length = 10;
-    this.plantsTempList = result.slice(0, 10);
+  get f() {
+    return this.searchPlantForm.controls;
+  }
+
+  filterResult() {
+    if (this.searchPlantForm.invalid) {
+      return;
+    }
+
+    const tempFilterParams: PlantsModel = this.searchPlantForm.value;
+
+    if (tempFilterParams.plant_type === '') {
+      delete tempFilterParams.plant_type;
+    }
+    if (tempFilterParams.appropriate_location === '') {
+      delete tempFilterParams.appropriate_location;
+    }
+    if (tempFilterParams.habitat_value === '') {
+      delete tempFilterParams.habitat_value;
+    }
+
+    this.pds.searchForPlants(tempFilterParams).subscribe(data => this.plantsTempList = data.slice(0, 10));
+  }
+
+  resetList() {
+    this.searchPlantForm.reset();
+    this.pds.getPlants().subscribe(data => this.plantsTempList = data.slice(0, 10));
   }
 
   openModal(row: any) {
