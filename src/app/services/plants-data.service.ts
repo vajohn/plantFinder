@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {PlantsModel} from '../models/plantsModel';
-import {map} from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root'
@@ -13,13 +13,16 @@ export class PlantsDataService {
   constructor(private http: HttpClient) {
   }
 
-  getPlants() {
+  getPlants(offset: number) {
     return this.http.get<PlantsModel[]>(
-      `${this.baseUrl}`
+      `${this.baseUrl}`, {params: {$limit: '15', $offset: offset.toString()}}
     );
   }
 
   searchForPlants(parameters) {
+    // append parameters
+
+    parameters.$limit = '10';
     return this.http.get<PlantsModel[]>(
       `${this.baseUrl}`, {params: parameters}
     );

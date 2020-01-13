@@ -28,24 +28,23 @@ describe('PlantsDataService', () => {
   it('should return an Observable', () => {
     const dummyData: PlantsModel[] = plantTestData;
 
-    plantsService.getPlants().subscribe(data => {
+    plantsService.getPlants(0).subscribe(data => {
       expect(data.length).toBeGreaterThan(1);
       expect(data).toEqual(dummyData);
     });
 
-    const request = httpMock.expectOne(`${plantsService.baseUrl}`);
+    const request = httpMock.expectOne(`${plantsService.baseUrl}?$limit=15&$offset=0`);
     expect(request.request.method).toBe('GET');
     request.flush(dummyData);
   });
 
   it('should return an Observable checking for Summer filter', () => {
     const dummyData: PlantsModel[] = filterTestData;
-
     plantsService.searchForPlants({bloom_time: 'Summer'}).subscribe(data => {
       expect(data).toEqual(dummyData);
     });
 
-    const request = httpMock.expectOne(`${plantsService.baseUrl}?bloom_time=Summer`);
+    const request = httpMock.expectOne(`${plantsService.baseUrl}?bloom_time=Summer&$limit=10`);
     expect(request.request.method).toBe('GET');
     request.flush(dummyData);
   });

@@ -62,7 +62,6 @@ export class FilterPlantsComponent implements OnInit {
 
   }
 
-
   get f() {
     return this.searchPlantForm.controls;
   }
@@ -74,13 +73,13 @@ export class FilterPlantsComponent implements OnInit {
 
     const tempFilterParams: PlantsModel = this.searchPlantForm.value;
 
-    if (tempFilterParams.plant_type === '') {
+    if (tempFilterParams.plant_type === '' || tempFilterParams.plant_type === null ) {
       delete tempFilterParams.plant_type;
     }
-    if (tempFilterParams.appropriate_location === '') {
+    if (tempFilterParams.appropriate_location === ''  || tempFilterParams.appropriate_location === null) {
       delete tempFilterParams.appropriate_location;
     }
-    if (tempFilterParams.habitat_value === '') {
+    if (tempFilterParams.habitat_value === ''  || tempFilterParams.habitat_value === null) {
       delete tempFilterParams.habitat_value;
     }
 
@@ -89,7 +88,7 @@ export class FilterPlantsComponent implements OnInit {
 
   resetList() {
     this.searchPlantForm.reset();
-    this.pds.getPlants().subscribe(data => this.plantsTempList = data.slice(0, 10));
+    this.pds.getPlants(0).subscribe(data => this.plantsTempList = data.slice(0, 10));
   }
 
   openModal(row: any) {

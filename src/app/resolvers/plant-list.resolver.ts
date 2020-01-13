@@ -9,7 +9,7 @@ export class PlantsListResolver {
   constructor(private plantsDataService: PlantsDataService) {
   }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Observable<never> {
-    return this.plantsDataService.getPlants();
+  resolve(): Observable<any> | Observable<never> {
+    return this.plantsDataService.getPlants(0);
   }
 }

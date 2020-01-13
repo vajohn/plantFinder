@@ -1,40 +1,27 @@
 <h1>Welcome to Plant Finder</h1>
-<table mat-table [dataSource]="plantsTempList" class="mat-elevation-z8" >
-  <caption *ngIf="showError">{{errorMessage}}</caption>
 
-  <ng-container matColumnDef="common_name">
-    <th id="common_name" mat-header-cell *matHeaderCellDef >Common name</th>
-    <td mat-cell *matCellDef="let element"> {{element.common_name}} </td>
-  </ng-container>
+<mat-card class="mat-elevation-z8">
+  <table class="mat-table" role="grid">
+    <caption *ngIf="showError">{{errorMessage}}</caption>
 
-  <!-- Plant Type Column -->
-  <ng-container matColumnDef="plant_type">
-    <th id="plant_type" mat-header-cell *matHeaderCellDef >Plant type</th>
-    <td mat-cell *matCellDef="let element"> {{element.plant_type}} </td>
-  </ng-container>
-  <!-- Soil type Column -->
-  <ng-container matColumnDef="soil_type">
-    <th id="soil_type" mat-header-cell *matHeaderCellDef >Soil type</th>
-    <td mat-cell *matCellDef="let element"> {{element.soil_type}} </td>
-  </ng-container>
-  <!-- Bloom time Column -->
-  <ng-container matColumnDef="bloom_time">
-    <th id="bloom_time" mat-header-cell *matHeaderCellDef >Bloom time</th>
-    <td mat-cell *matCellDef="let element"> {{element.bloom_time}} </td>
-  </ng-container>
-  <!-- Flower color Column -->
-  <ng-container matColumnDef="flower_color">
-    <th id="flower_color" mat-header-cell *matHeaderCellDef >Flower color</th>
-    <td mat-cell *matCellDef="let element"> {{element.flower_color}} </td>
-  </ng-container>
-  <!-- Habitat value Column -->
-  <ng-container matColumnDef="habitat_value">
-    <th id="habitat_value" mat-header-cell *matHeaderCellDef >Habitat value</th>
-    <td mat-cell *matCellDef="let element"> {{element.habitat_value}} </td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-</table>
-<app-pagination [items]="plantsList?.filteredData" (changePage)="onChangePage($event)"></app-pagination>
+    <tr class="mat-header-row">
+      <th [id]="col" *ngFor="let col of displayedColumns" class="mat-header-cell">
+        {{headerShaper(col)}}
+      </th>
+    </tr>
+    <tr *ngFor="let char of plantsTempList" class="mat-row">
+      <td *ngFor="let col of displayedColumns" class="mat-cell">
+        {{char[col]}}
+      </td>
+    </tr>
+  </table>
+</mat-card>
+<div class="row between-sm">
+  <button mat-icon-button class="col-sm-3" (click)="previousList()" [disabled]="offsetValue === 0">
+    <mat-icon>skip_previous</mat-icon>
+  </button>
+  <h3 class="col-sm-3">{{currentPage}}</h3>
+  <button mat-icon-button class="col-sm-3" (click)="nextList()">
+    <mat-icon>skip_next</mat-icon>
+  </button>
+</div>
