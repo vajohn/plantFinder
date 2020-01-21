@@ -1,16 +1,16 @@
 <h1>Welcome to Plant Finder</h1>
 
-<mat-card class="mat-elevation-z8">
+<mat-card class="mat-elevation-z8 scroller">
   <table class="mat-table" role="grid">
     <caption *ngIf="showError">{{errorMessage}}</caption>
 
-    <tr class="mat-header-row">
-      <th [id]="col" *ngFor="let col of displayedColumns" class="mat-header-cell">
+    <tr >
+      <th [id]="col" *ngFor="let col of displayedColumns" class="headerCell">
         {{headerShaper(col)}}
       </th>
     </tr>
-    <tr *ngFor="let char of plantsTempList" class="mat-row">
-      <td *ngFor="let col of displayedColumns" class="mat-cell">
+    <tr *ngFor="let char of plantsTempList" >
+      <td *ngFor="let col of displayedColumns" class="rowCell">
         {{char[col]}}
       </td>
     </tr>
