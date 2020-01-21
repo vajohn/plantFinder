@@ -5,6 +5,7 @@ import {PlantInfoModalComponent} from '../../../components/plant-info-modal/plan
 import {PlantsModel} from '../../../models/plantsModel';
 import {PlantsDataService} from '../../../services/plants-data.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {LoaderService} from '../../../services/loader.service';
 
 @Component({
   selector: 'app-filter-plants',
@@ -22,6 +23,7 @@ export class FilterPlantsComponent implements OnInit {
   values: string[] = ['Pollinator', 'Cover', 'Fruit', 'Greens', 'Buds', 'Ghetto'];
 
   showError = false;
+  sortOrder = false;
   errorMessage = '';
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -30,7 +32,8 @@ export class FilterPlantsComponent implements OnInit {
     private route: ActivatedRoute,
     public dialog: MatDialog,
     private pds: PlantsDataService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private ls: LoaderService
   ) {
   }
 
@@ -70,20 +73,13 @@ export class FilterPlantsComponent implements OnInit {
     if (this.searchPlantForm.invalid) {
       return;
     }
+    this.ls.showHide();
 
-    const tempFilterParams: PlantsModel = this.searchPlantForm.value;
+    this.pds.searchForPlants(this.filterColumn(this.searchPlantForm.value)).subscribe(data => {
+      this.plantsTempList = data;
+      this.ls.showHide();
+    });
 
-    if (tempFilterParams.plant_type === '' || tempFilterParams.plant_type === null ) {
-      delete tempFilterParams.plant_type;
-    }
-    if (tempFilterParams.appropriate_location === ''  || tempFilterParams.appropriate_location === null) {
-      delete tempFilterParams.appropriate_location;
-    }
-    if (tempFilterParams.habitat_value === ''  || tempFilterParams.habitat_value === null) {
-      delete tempFilterParams.habitat_value;
-    }
-
-    this.pds.searchForPlants(tempFilterParams).subscribe(data => this.plantsTempList = data.slice(0, 10));
   }
 
   resetList() {
@@ -92,7 +88,33 @@ export class FilterPlantsComponent implements OnInit {
   }
 
   openModal(row: any) {
-    console.log(row);
+
     this.dialog.open(PlantInfoModalComponent, {data: row});
+  }
+
+  sortColumn() {
+    this.sortOrder = !this.sortOrder;
+    this.ls.showHide();
+    const order = this.sortOrder ? 'ASC' : 'DESC';
+    const temp = this.filterColumn(this.searchPlantForm.value);
+    temp.$order = 'common_name+' + order;
+    this.pds.searchForPlants(temp).subscribe(data => {
+      this.plantsTempList = data;
+      this.ls.showHide();
+    });
+  }
+
+  filterColumn(tempFilterParams) {
+    if (tempFilterParams.plant_type === '' || tempFilterParams.plant_type === null) {
+      delete tempFilterParams.plant_type;
+    }
+    if (tempFilterParams.appropriate_location === '' || tempFilterParams.appropriate_location === null) {
+      delete tempFilterParams.appropriate_location;
+    }
+    if (tempFilterParams.habitat_value === '' || tempFilterParams.habitat_value === null) {
+      delete tempFilterParams.habitat_value;
+    }
+
+    return tempFilterParams;
   }
 }

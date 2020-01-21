@@ -3,6 +3,7 @@ import {MatSort, MatTableDataSource} from '@angular/material';
 import {ActivatedRoute} from '@angular/router';
 import {PlantsModel} from '../../../models/plantsModel';
 import {PlantsDataService} from '../../../services/plants-data.service';
+import {LoaderService} from '../../../services/loader.service';
 
 @Component({
   selector: 'app-all-plants',
@@ -18,8 +19,11 @@ export class AllPlantsComponent implements OnInit {
   errorMessage = '';
   offsetValue = 0;
   currentPage = 1;
+  sortOrder = false;
+  selectedCol = '';
 
-  constructor(private route: ActivatedRoute, private pds: PlantsDataService) {
+  constructor(private route: ActivatedRoute, private pds: PlantsDataService, private ls: LoaderService) {
+
   }
 
   ngOnInit() {
@@ -68,5 +72,17 @@ export class AllPlantsComponent implements OnInit {
   headerShaper(title: string): string {
     const tempTitle = title.replace(/_/g, ' ');
     return tempTitle[0].toUpperCase() + tempTitle.substring(1);
+  }
+
+  showClose() {
+    this.ls.showHide();
+  }
+
+  sortColumn(column) {
+    this.sortOrder = !this.sortOrder;
+    this.selectedCol = column;
+    const order = this.sortOrder ? 'ASC' : 'DESC';
+
+    this.pds.getOdoredPlants(this.offsetValue, column + '+' + order).subscribe(data => this.plantsTempList = data);
   }
 }

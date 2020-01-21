@@ -62,8 +62,13 @@
   <caption *ngIf="showError">{{errorMessage}}</caption>
 
   <ng-container matColumnDef="common_name">
-    <th id="common_name" mat-header-cell *matHeaderCellDef >Common name</th>
-    <td mat-cell *matCellDef="let element"> {{element.common_name}} </td>
+    <th (click)="sortColumn()" id="common_name" mat-header-cell *matHeaderCellDef >
+      Common name
+      <mat-icon>
+        {{sortOrder ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}
+      </mat-icon>
+    </th>
+    <td mat-cell *matCellDef="let element" > {{element.common_name}} </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

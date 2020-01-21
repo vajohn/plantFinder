@@ -1,0 +1,65 @@
+.overlay{
+  background: rgba(0,0,0,0.5);
+  position: absolute;
+  width: 100vw;
+  height:100vh;
+  z-index:998;
+  top:0;
+  left: 0;
+  overflow: auto;
+}
+
+.parent {
+  height:100vh;
+  position: sticky;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  align-items: center;
+  z-index:999;
+  /*inner text*/
+  .child {
+    font-size: 1.4rem;
+    color: #fff;
+  }
+
+
+}
+/*spinner*/
+.rings {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  &:after {
+    content: "";
+    display: block;
+    width: 300%;
+    height: 300%;
+    margin: 8px;
+    border-radius: 50%;
+    border: 6px solid #fff;
+    border-color: #fff transparent green transparent;
+    animation: rings-spinner 1.3s linear infinite;
+  }
+  @keyframes rings-spinner {
+    0% {
+      transform: scale(0.95) rotate(0deg);
+    }
+    15% {
+      transform: scale(1.1) rotate(90deg);
+    }
+    60% {
+      transform: scale(0.95) rotate(180deg);
+    }
+    100% {
+      transform: scale(0.9) rotate(360deg);
+    }
+  }
+}
+
+
+
+
+
+
+

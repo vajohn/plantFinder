@@ -9,6 +9,7 @@ import {MaterialModule} from './material.module';
 import {HttpClientModule} from '@angular/common/http';
 import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 import {ErrorsModule} from './views/errors/errors.module';
+import {ComponentsModule} from './components/components.module';
 
 // future proofing for new layouts, additional or to replace current
 const APP_CONTAINERS = [
@@ -21,14 +22,15 @@ const APP_CONTAINERS = [
     ...APP_CONTAINERS,
 
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MaterialModule,
-    HttpClientModule,
-    ErrorsModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MaterialModule,
+        HttpClientModule,
+        ErrorsModule,
+        ComponentsModule
+    ],
   providers: [{
     provide: LocationStrategy,
     useClass: HashLocationStrategy

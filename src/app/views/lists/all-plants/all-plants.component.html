@@ -1,12 +1,14 @@
 <h1>Welcome to Plant Finder</h1>
-
 <mat-card class="mat-elevation-z8 scroller">
   <table class="mat-table" role="grid">
     <caption *ngIf="showError">{{errorMessage}}</caption>
 
     <tr >
-      <th [id]="col" *ngFor="let col of displayedColumns" class="headerCell">
-        {{headerShaper(col)}}
+
+      <th [id]="col" *ngFor="let col of displayedColumns" class="headerCell" (click)="sortColumn(col)">
+        {{headerShaper(col)}}<mat-icon *ngIf="selectedCol === col">
+        {{sortOrder ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}
+      </mat-icon>
       </th>
     </tr>
     <tr *ngFor="let char of plantsTempList" >
