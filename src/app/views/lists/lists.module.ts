@@ -16,7 +16,7 @@ import {ComponentsModule} from '../../components/components.module';
     ListsRoutingModule,
     MaterialModule,
     ComponentsModule,
-    FormsModule
+    FormsModule,
   ]
 })
 export class ListsModule { }

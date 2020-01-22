@@ -1,5 +1,10 @@
 @import "scss/material";
 @import "scss/error";
+@import "~@angular/cdk/overlay-prebuilt.css";
+@import "~@angular/cdk/overlay";
+@include cdk-overlay();
+
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 table {

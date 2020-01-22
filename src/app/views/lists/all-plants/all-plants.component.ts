@@ -1,9 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatSort, MatTableDataSource} from '@angular/material';
+import {MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
 import {ActivatedRoute} from '@angular/router';
 import {PlantsModel} from '../../../models/plantsModel';
 import {PlantsDataService} from '../../../services/plants-data.service';
 import {LoaderService} from '../../../services/loader.service';
+import {ToastComponent} from '../../../components/toast/toast.component';
 
 @Component({
   selector: 'app-all-plants',
@@ -22,7 +23,12 @@ export class AllPlantsComponent implements OnInit {
   sortOrder = false;
   selectedCol = '';
 
-  constructor(private route: ActivatedRoute, private pds: PlantsDataService, private ls: LoaderService) {
+  constructor(
+    private route: ActivatedRoute,
+    private pds: PlantsDataService,
+    private ls: LoaderService,
+    private sb: MatSnackBar
+  ) {
 
   }
 
@@ -35,12 +41,16 @@ export class AllPlantsComponent implements OnInit {
       for (const i in saveData) {
         if (saveData !== []) {
           this.plantsList.filteredData.push(saveData[i]);
-
         }
       }
     }, error => {
-      this.showError = true;
-      this.errorMessage = error;
+      this.sb.openFromComponent(ToastComponent, {
+        duration: 5000,
+        verticalPosition: 'top',
+        horizontalPosition: 'start',
+        data: {text: this.errorMessage},
+        panelClass: 'errorToast'
+      });
     });
     //
     this.plantsList.sort = this.sort;
@@ -55,9 +65,13 @@ export class AllPlantsComponent implements OnInit {
 
   previousList() {
     if (this.offsetValue > 0) {
+      this.ls.showHide();
       this.offsetValue -= 15;
       this.currentPage--;
-      this.pds.getPlants(this.offsetValue).subscribe(data => this.plantsTempList = data);
+      this.pds.getPlants(this.offsetValue).subscribe(data => {
+        this.plantsTempList = data;
+        this.ls.showHide();
+      });
 
     }
   }
@@ -65,17 +79,16 @@ export class AllPlantsComponent implements OnInit {
   nextList() {
     this.offsetValue += 15;
     this.currentPage++;
-    this.pds.getPlants(this.offsetValue).subscribe(data => this.plantsTempList = data);
+    this.pds.getPlants(this.offsetValue).subscribe(data => {
+      this.plantsTempList = data;
+      this.ls.showHide();
+    });
 
   }
 
   headerShaper(title: string): string {
     const tempTitle = title.replace(/_/g, ' ');
     return tempTitle[0].toUpperCase() + tempTitle.substring(1);
-  }
-
-  showClose() {
-    this.ls.showHide();
   }
 
   sortColumn(column) {

@@ -29,7 +29,8 @@ const APP_CONTAINERS = [
         MaterialModule,
         HttpClientModule,
         ErrorsModule,
-        ComponentsModule
+        ComponentsModule,
+
     ],
   providers: [{
     provide: LocationStrategy,

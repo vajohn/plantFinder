@@ -4,7 +4,7 @@ import {
   MatCardModule, MatDialogModule,
   MatFormFieldModule,
   MatIconModule, MatInputModule, MatRadioModule,
-  MatSelectModule, MatSortModule,
+  MatSelectModule, MatSnackBarModule, MatSortModule,
   MatTableModule,
   MatToolbarModule
 } from '@angular/material';
@@ -23,7 +23,8 @@ import {ReactiveFormsModule} from '@angular/forms';
     MatInputModule,
     MatSortModule,
     MatRadioModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSnackBarModule
   ],
   imports: [
     MatToolbarModule,
@@ -37,7 +38,8 @@ import {ReactiveFormsModule} from '@angular/forms';
     MatInputModule,
     MatSortModule,
     MatRadioModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSnackBarModule
   ]
 })
 export class MaterialModule {

@@ -1,11 +1,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatDialog, MatSort, MatTableDataSource} from '@angular/material';
+import {MatDialog, MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
 import {ActivatedRoute} from '@angular/router';
 import {PlantInfoModalComponent} from '../../../components/plant-info-modal/plant-info-modal.component';
 import {PlantsModel} from '../../../models/plantsModel';
 import {PlantsDataService} from '../../../services/plants-data.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {LoaderService} from '../../../services/loader.service';
+import {ToastComponent} from '../../../components/toast/toast.component';
 
 @Component({
   selector: 'app-filter-plants',
@@ -33,7 +34,8 @@ export class FilterPlantsComponent implements OnInit {
     public dialog: MatDialog,
     private pds: PlantsDataService,
     private formBuilder: FormBuilder,
-    private ls: LoaderService
+    private ls: LoaderService,
+    private sb: MatSnackBar
   ) {
   }
 
@@ -51,6 +53,13 @@ export class FilterPlantsComponent implements OnInit {
     }, error => {
       this.showError = true;
       this.errorMessage = error;
+      this.sb.openFromComponent(ToastComponent, {
+        duration: 5000,
+        verticalPosition: 'top',
+        horizontalPosition: 'start',
+        data: {text: this.errorMessage},
+        panelClass: 'errorToast'
+      });
     });
 
     this.plantsList.sort = this.sort;
