@@ -1,12 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatDialog, MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
+import {MatDialog, MatSort, MatTableDataSource} from '@angular/material';
 import {ActivatedRoute} from '@angular/router';
 import {PlantInfoModalComponent} from '../../../components/plant-info-modal/plant-info-modal.component';
 import {PlantsModel} from '../../../models/plantsModel';
 import {PlantsDataService} from '../../../services/plants-data.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {LoaderService} from '../../../services/loader.service';
-import {ToastComponent} from '../../../components/toast/toast.component';
 
 @Component({
   selector: 'app-filter-plants',
@@ -33,9 +31,7 @@ export class FilterPlantsComponent implements OnInit {
     private route: ActivatedRoute,
     public dialog: MatDialog,
     private pds: PlantsDataService,
-    private formBuilder: FormBuilder,
-    private ls: LoaderService,
-    private sb: MatSnackBar
+    private formBuilder: FormBuilder
   ) {
   }
 
@@ -50,16 +46,6 @@ export class FilterPlantsComponent implements OnInit {
         }
       }
       // this.plantsList.filteredData.push(...saveData); jasmine refused to allow this
-    }, error => {
-      this.showError = true;
-      this.errorMessage = error;
-      this.sb.openFromComponent(ToastComponent, {
-        duration: 5000,
-        verticalPosition: 'top',
-        horizontalPosition: 'start',
-        data: {text: this.errorMessage},
-        panelClass: 'errorToast'
-      });
     });
 
     this.plantsList.sort = this.sort;
@@ -82,11 +68,9 @@ export class FilterPlantsComponent implements OnInit {
     if (this.searchPlantForm.invalid) {
       return;
     }
-    this.ls.showHide();
 
     this.pds.searchForPlants(this.filterColumn(this.searchPlantForm.value)).subscribe(data => {
       this.plantsTempList = data;
-      this.ls.showHide();
     });
 
   }
@@ -103,13 +87,11 @@ export class FilterPlantsComponent implements OnInit {
 
   sortColumn() {
     this.sortOrder = !this.sortOrder;
-    this.ls.showHide();
     const order = this.sortOrder ? 'ASC' : 'DESC';
     const temp = this.filterColumn(this.searchPlantForm.value);
     temp.$order = 'common_name+' + order;
     this.pds.searchForPlants(temp).subscribe(data => {
       this.plantsTempList = data;
-      this.ls.showHide();
     });
   }
 

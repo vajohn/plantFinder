@@ -1,10 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
+import {MatSort, MatTableDataSource} from '@angular/material';
 import {ActivatedRoute} from '@angular/router';
 import {PlantsModel} from '../../../models/plantsModel';
 import {PlantsDataService} from '../../../services/plants-data.service';
-import {LoaderService} from '../../../services/loader.service';
-import {ToastComponent} from '../../../components/toast/toast.component';
 
 @Component({
   selector: 'app-all-plants',
@@ -25,9 +23,7 @@ export class AllPlantsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private pds: PlantsDataService,
-    private ls: LoaderService,
-    private sb: MatSnackBar
+    private pds: PlantsDataService
   ) {
 
   }
@@ -43,14 +39,6 @@ export class AllPlantsComponent implements OnInit {
           this.plantsList.filteredData.push(saveData[i]);
         }
       }
-    }, error => {
-      this.sb.openFromComponent(ToastComponent, {
-        duration: 5000,
-        verticalPosition: 'top',
-        horizontalPosition: 'start',
-        data: {text: this.errorMessage},
-        panelClass: 'errorToast'
-      });
     });
     //
     this.plantsList.sort = this.sort;
@@ -58,19 +46,12 @@ export class AllPlantsComponent implements OnInit {
 
   }
 
-  onChangePage(plantsTempList: Array<any>) {
-    // update current page of plants
-    this.plantsTempList = plantsTempList;
-  }
-
   previousList() {
     if (this.offsetValue > 0) {
-      this.ls.showHide();
       this.offsetValue -= 15;
       this.currentPage--;
       this.pds.getPlants(this.offsetValue).subscribe(data => {
         this.plantsTempList = data;
-        this.ls.showHide();
       });
 
     }
@@ -81,7 +62,6 @@ export class AllPlantsComponent implements OnInit {
     this.currentPage++;
     this.pds.getPlants(this.offsetValue).subscribe(data => {
       this.plantsTempList = data;
-      this.ls.showHide();
     });
 
   }
