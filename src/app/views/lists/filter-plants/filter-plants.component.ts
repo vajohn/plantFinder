@@ -1,10 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatDialog, MatSort, MatTableDataSource} from '@angular/material';
+import {MatDialog} from '@angular/material';
 import {ActivatedRoute} from '@angular/router';
 import {PlantInfoModalComponent} from '../../../components/plant-info-modal/plant-info-modal.component';
-import {PlantsModel} from '../../../models/plantsModel';
 import {PlantsDataService} from '../../../services/plants-data.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {TableComponent} from '../../../components/table/table.component';
 
 @Component({
   selector: 'app-filter-plants',
@@ -13,19 +13,15 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 })
 export class FilterPlantsComponent implements OnInit {
   plantsList;
-  plantsTempList;
   searchPlantForm: FormGroup;
   displayedColumns: string[] = ['common_name'];
   seasons: string[] = ['Winter', 'Spring', 'Summer', 'Autumn'];
   types: string[] = ['Shrub', 'Tree', 'Perennial', 'Grass'];
   locations: string[] = ['Garden', 'Roof', 'Sidewalk'];
-  values: string[] = ['Pollinator', 'Cover', 'Fruit', 'Greens', 'Buds', 'Ghetto'];
-
-  showError = false;
+  values: string[] = ['Pollinator', 'Cover', 'Fruit', 'Greens', 'Buds'];
   sortOrder = false;
-  errorMessage = '';
 
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild(TableComponent, {static: false}) private tableComponent: TableComponent;
 
   constructor(
     private route: ActivatedRoute,
@@ -35,22 +31,8 @@ export class FilterPlantsComponent implements OnInit {
   ) {
   }
 
+
   ngOnInit() {
-    const currentData = JSON.parse(sessionStorage.getItem('local')) as PlantsModel[];
-    const saveData: PlantsModel[] = currentData !== undefined ? currentData : [] as PlantsModel[];
-    this.route.data.subscribe(data => {
-      this.plantsList = new MatTableDataSource(data.PlantsListResolver);
-      for (const i in saveData) {
-        if (saveData !== []) {
-          this.plantsList.filteredData.push(saveData[i]);
-        }
-      }
-      // this.plantsList.filteredData.push(...saveData); jasmine refused to allow this
-    });
-
-    this.plantsList.sort = this.sort;
-    this.plantsTempList = this.plantsList;
-
     this.searchPlantForm = this.formBuilder.group({
       bloom_time: ['', Validators.required],
       plant_type: [''],
@@ -58,6 +40,11 @@ export class FilterPlantsComponent implements OnInit {
       habitat_value: ['']
     });
 
+
+    this.route.data.subscribe(data => {
+      this.plantsList = data.PlantsListResolver;
+
+    });
   }
 
   get f() {
@@ -68,16 +55,12 @@ export class FilterPlantsComponent implements OnInit {
     if (this.searchPlantForm.invalid) {
       return;
     }
-
-    this.pds.searchForPlants(this.filterColumn(this.searchPlantForm.value)).subscribe(data => {
-      this.plantsTempList = data;
-    });
-
+    this.tableComponent.filter(this.filterColumn, this.searchPlantForm.value);
   }
 
   resetList() {
     this.searchPlantForm.reset();
-    this.pds.getPlants(0).subscribe(data => this.plantsTempList = data.slice(0, 10));
+    this.pds.getPlants(0).subscribe(data => this.plantsList = data.slice(0, 10));
   }
 
   openModal(row: any) {
@@ -91,7 +74,7 @@ export class FilterPlantsComponent implements OnInit {
     const temp = this.filterColumn(this.searchPlantForm.value);
     temp.$order = 'common_name+' + order;
     this.pds.searchForPlants(temp).subscribe(data => {
-      this.plantsTempList = data;
+      this.plantsList = data;
     });
   }
 
@@ -108,4 +91,5 @@ export class FilterPlantsComponent implements OnInit {
 
     return tempFilterParams;
   }
+
 }

@@ -1,30 +1,7 @@
 <h1>Welcome to Plant Finder</h1>
 
-<mat-card class="mat-elevation-z8 scroller">
-  <table class="mat-table" role="grid">
-    <caption *ngIf="showError">{{errorMessage}}</caption>
+<app-table [data]="plantsTempList" [displayedColumns]="displayedColumns">
 
-    <tr >
+</app-table>
 
-      <th [id]="col" *ngFor="let col of displayedColumns" class="headerCell" (click)="sortColumn(col)">
-        {{headerShaper(col)}}<mat-icon *ngIf="selectedCol === col">
-        {{sortOrder ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}
-      </mat-icon>
-      </th>
-    </tr>
-    <tr *ngFor="let char of plantsTempList" >
-      <td *ngFor="let col of displayedColumns" class="rowCell">
-        {{char[col]}}
-      </td>
-    </tr>
-  </table>
-</mat-card>
-<div class="row between-sm">
-  <button mat-icon-button class="col-sm-3" (click)="previousList()" [disabled]="offsetValue === 0">
-    <mat-icon>skip_previous</mat-icon>
-  </button>
-  <h3 class="col-sm-3">{{currentPage}}</h3>
-  <button mat-icon-button class="col-sm-3" (click)="nextList()">
-    <mat-icon>skip_next</mat-icon>
-  </button>
-</div>
+

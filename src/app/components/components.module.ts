@@ -6,9 +6,16 @@ import {PaginationComponent} from './pagination/pagination.component';
 import {MaterialModule} from '../material.module';
 import {LoaderComponent} from './loader/loader.component';
 import {ToastComponent} from './toast/toast.component';
+import { TableComponent } from './table/table.component';
 
 @NgModule({
-  declarations: [PaginationComponent, PlantInfoModalComponent, LoaderComponent, ToastComponent],
+  declarations: [
+    PaginationComponent,
+    PlantInfoModalComponent,
+    LoaderComponent,
+    ToastComponent,
+    TableComponent
+  ],
   imports: [
     CommonModule,
     MaterialModule
@@ -20,7 +27,7 @@ import {ToastComponent} from './toast/toast.component';
   exports: [
     PaginationComponent,
     LoaderComponent,
-
+    TableComponent
   ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}

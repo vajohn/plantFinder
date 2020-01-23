@@ -1,4 +1,5 @@
 export interface PlantsModel {
+  $order?: string;
   latin_name: string;
   common_name?: string;
   family_name: string;

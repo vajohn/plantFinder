@@ -1,0 +1,29 @@
+<mat-card class="mat-elevation-z8 scroller">
+  <table class="table">
+    <caption *ngIf="caption">{{caption}}</caption>
+
+    <tr>
+      <th id="key" *ngFor="let key of keys" class="headerCell" (click)="sortColumn(key)">
+        {{headerShaper(key)}}
+        <mat-icon *ngIf="selectedCol === key">
+          {{sortOrder ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}
+        </mat-icon>
+      </th>
+    </tr>
+
+    <tr *ngFor="let data of data">
+      <td *ngFor="let key of keys" class="rowCell">{{ data === [] ? 'There is no data to display': data[key] }}</td>
+      <td *ngIf="data[0] === []">There is no data to display</td>
+    </tr>
+
+  </table>
+  <div *ngIf="filteredData === undefined" class="row between-sm">
+    <button mat-icon-button class="col-sm-3" (click)="previousList()" [disabled]="offsetValue === 0">
+      <mat-icon>skip_previous</mat-icon>
+    </button>
+    <h3 class="col-sm-3">{{currentPage}}</h3>
+    <button mat-icon-button class="col-sm-3" (click)="nextList()">
+      <mat-icon>skip_next</mat-icon>
+    </button>
+  </div>
+</mat-card>

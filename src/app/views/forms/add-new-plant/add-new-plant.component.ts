@@ -61,7 +61,10 @@ export class AddNewPlantComponent implements OnInit, OnDestroy {
     // let saveData: PlantsModel[] = [] as PlantsModel[];
 
     const currentData = JSON.parse(sessionStorage.getItem('local')) as PlantsModel[];
-    const saveData: PlantsModel[] = currentData !== undefined ? currentData : [] as PlantsModel[];
+
+    console.log(currentData);
+
+    const saveData: PlantsModel[] = currentData !== null ? currentData : [] as PlantsModel[];
     saveData.push(this.addNewPlant.value);
     sessionStorage.setItem('local', JSON.stringify(saveData));
     this.showResult = true;
