@@ -10,7 +10,7 @@ import {LoaderService} from './loader.service';
 export class PlantsDataService {
 
   baseUrl = 'https://data.sfgov.org/resource/vmnk-skih.json';
-  private delayTime = 5000;
+  private delayTime = 500;
 
   constructor(private http: HttpClient, private ls: LoaderService) {
   }

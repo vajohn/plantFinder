@@ -1,0 +1,16 @@
+.controlContainer {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+
+  .controls {
+    flex-basis: 20%;
+
+    button {
+      margin: 15px;
+    }
+  }
+
+}
+
+

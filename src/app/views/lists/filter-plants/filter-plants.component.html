@@ -1,6 +1,6 @@
 <form [formGroup]="searchPlantForm" (ngSubmit)="filterResult()">
-  <div class="row">
-    <div class="col-md-3">
+  <div class="controlContainer">
+    <div class="controls">
       <label id="first">Season</label>
       <mat-radio-group
         aria-labelledby="first"
@@ -15,7 +15,7 @@
 
       </mat-radio-group>
     </div>
-    <div class="col-md-3">
+    <div class="controls">
       <label id="second">Types</label>
       <mat-radio-group
         aria-labelledby="first"
@@ -26,7 +26,7 @@
         </mat-radio-button>
       </mat-radio-group>
     </div>
-    <div class="col-md-3">
+    <div class="controls">
       <label id="third">Location</label>
       <mat-radio-group
         aria-labelledby="first"
@@ -37,7 +37,7 @@
         </mat-radio-button>
       </mat-radio-group>
     </div>
-    <div class="col-md-3">
+    <div class="controls">
       <label id="fourth">Value</label>
       <mat-radio-group
         aria-labelledby="first"
@@ -48,13 +48,14 @@
         </mat-radio-button>
       </mat-radio-group>
     </div>
+    <div class="controls">
+      <div class="controlContainer buttons">
+        <button mat-raised-button  type="button" (click)="resetList()">Reset</button>
+        <button mat-raised-button type="submit">Filter</button>
+      </div>
+
+    </div>
   </div>
-
-
-<div class="row around-sm">
-  <button mat-raised-button class="col-md-5" type="button" (click)="resetList()">Reset</button>
-  <button mat-raised-button class="col-md-5" type="submit">Filter</button>
-</div>
 
 </form>
 

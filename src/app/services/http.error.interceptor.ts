@@ -9,7 +9,9 @@ import {Observable, throwError} from 'rxjs';
 import {retry, catchError} from 'rxjs/operators';
 import {MatSnackBar} from '@angular/material';
 import {ToastComponent} from '../components/toast/toast.component';
+import {Injectable} from '@angular/core';
 
+@Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {
 
   constructor(private sb: MatSnackBar) {
