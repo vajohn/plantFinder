@@ -1,11 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {PlantsModel} from '../models/plantsModel';
-import {catchError, delay, map, retry} from 'rxjs/operators';
+import {delay, map} from 'rxjs/operators';
 import {LoaderService} from './loader.service';
-import {MatSnackBar} from '@angular/material';
-import {throwError} from 'rxjs';
-import {ToastComponent} from '../components/toast/toast.component';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +10,9 @@ import {ToastComponent} from '../components/toast/toast.component';
 export class PlantsDataService {
 
   baseUrl = 'https://data.sfgov.org/resource/vmnk-skih.json';
-  private delayTime = 50000;
+  private delayTime = 5000;
 
-  constructor(private http: HttpClient, private ls: LoaderService, private sb: MatSnackBar) {
+  constructor(private http: HttpClient, private ls: LoaderService) {
   }
 
   getPlants(offset: number) {
@@ -27,9 +24,7 @@ export class PlantsDataService {
       map(data => {
         this.ls.showHide();
         return data;
-      }),
-      retry(3),
-      catchError(this.errorHandler)
+      })
     );
   }
 
@@ -45,9 +40,8 @@ export class PlantsDataService {
       map(data => {
         this.ls.showHide();
         return data;
-      }),
-      retry(3),
-      catchError(this.errorHandler));
+      })
+    );
   }
 
   getOdoredPlants(offset: number, order: string) {
@@ -59,32 +53,8 @@ export class PlantsDataService {
       map(data => {
         this.ls.showHide();
         return data;
-      }),
-      retry(3),
-      catchError(this.errorHandler)
+      })
     );
   }
 
-  errorHandler(error) {
-    let errorMessage: string;
-
-    if (error.error instanceof ErrorEvent) {
-      // client side error
-      errorMessage = `Error: ${error.error.message}`;
-    } else {
-      // server-side error
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-
-    // customer friendly dialog
-    this.sb.openFromComponent(ToastComponent, {
-      duration: 5000,
-      verticalPosition: 'top',
-      horizontalPosition: 'start',
-      data: {text: error},
-      panelClass: 'errorToast'
-    });
-
-    return throwError(errorMessage);
-  }
 }
