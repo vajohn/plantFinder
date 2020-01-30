@@ -5,7 +5,7 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
-import {retry, catchError, finalize} from 'rxjs/operators';
+import {retry, catchError, finalize, delay, map} from 'rxjs/operators';
 import {MatSnackBar} from '@angular/material';
 import {ToastComponent} from '../components/toast/toast.component';
 import {Injectable} from '@angular/core';
@@ -13,6 +13,7 @@ import {LoaderService} from './loader.service';
 
 @Injectable()
 export class HttpCustomInterceptor implements HttpCustomInterceptor {
+  private delayTime = 5000;
 
   constructor(private sb: MatSnackBar, private ls: LoaderService) {
   }
@@ -21,6 +22,8 @@ export class HttpCustomInterceptor implements HttpCustomInterceptor {
     this.ls.showHide();
     return next.handle(request)
       .pipe(
+        delay(this.delayTime),
+        map(data => data ),
         retry(1),
         catchError((error: HttpErrorResponse) => {
           let errorMessage: string;
@@ -41,7 +44,7 @@ export class HttpCustomInterceptor implements HttpCustomInterceptor {
           });
           return throwError(errorMessage);
         }),
-        finalize(() =>  this.ls.showHide())
+        finalize(() => this.ls.showHide())
       );
   }
 }
