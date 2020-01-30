@@ -10,7 +10,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 import {ErrorsModule} from './views/errors/errors.module';
 import {ComponentsModule} from './components/components.module';
-import {HttpErrorInterceptor} from './services/http.error.interceptor';
+import {HttpCustomInterceptor} from './services/http-custom-interceptor.service';
 
 // future proofing for new layouts, additional or to replace current
 const APP_CONTAINERS = [
@@ -39,7 +39,7 @@ const APP_CONTAINERS = [
     },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: HttpErrorInterceptor,
+      useClass: HttpCustomInterceptor,
       multi: true
     }
   ],

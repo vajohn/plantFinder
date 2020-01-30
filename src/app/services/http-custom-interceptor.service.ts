@@ -1,23 +1,24 @@
 import {
   HttpEvent,
-  HttpInterceptor,
   HttpHandler,
   HttpRequest,
-  HttpErrorResponse
+  HttpErrorResponse,
 } from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
-import {retry, catchError} from 'rxjs/operators';
+import {retry, catchError, finalize} from 'rxjs/operators';
 import {MatSnackBar} from '@angular/material';
 import {ToastComponent} from '../components/toast/toast.component';
 import {Injectable} from '@angular/core';
+import {LoaderService} from './loader.service';
 
 @Injectable()
-export class HttpErrorInterceptor implements HttpInterceptor {
+export class HttpCustomInterceptor implements HttpCustomInterceptor {
 
-  constructor(private sb: MatSnackBar) {
+  constructor(private sb: MatSnackBar, private ls: LoaderService) {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    this.ls.showHide();
     return next.handle(request)
       .pipe(
         retry(1),
@@ -39,7 +40,8 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             panelClass: 'errorToast'
           });
           return throwError(errorMessage);
-        })
+        }),
+        finalize(() =>  this.ls.showHide())
       );
   }
 }
